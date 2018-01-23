@@ -657,7 +657,7 @@
 	</target>
 
 
-	<target name="msi" description="Build Windows Installer packages" depends="revision">
+	<target name="msi" description="Build Windows Installer packages" depends="revision, wine-path">
 		<antcall target="msi-arch">
 			<param name="arch" value="x64" />
 		</antcall>
@@ -687,7 +687,7 @@
 			<arg line="filebot.wix -out msi.wixobj" />
 		</exec>
 		<exec executable="light" dir="${dir.staging}" failonerror="true">
-			<arg line="msi.wixobj -sval -ext WixUIExtension -out ${dir.dist}/${release}_${arch}.msi" />
+			<arg line="msi.wixobj -sval -ext WixUIExtension -out ${dir.dist.win}/${release}_${arch}.msi" />
 		</exec>
 	</target>
 
@@ -847,6 +847,14 @@
 			<arg line="rev-list --count master" />
 		</exec>
 		<echo>Revision: ${revision}</echo>
+	</target>
+
+
+	<target name="wine-path" depends="init">
+		<exec executable="winepath" outputproperty="dir.dist.win" failonerror="true" error="/dev/null">
+			<arg line="-w ${dir.dist}" />
+		</exec>
+		<echo>Wine Path: ${dir.dist.win}</echo>
 	</target>
 
 
