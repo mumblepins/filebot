@@ -7,13 +7,10 @@ jobs:
             - checkout
             - run: |
                 set -x
-                export LC_ALL=en_US.utf-8
-                export LANG=en_US.utf-8
                 ant resolve
                 ant fatjar
                 ant msi
                 ant deb
-                ant snap
             
             - store_artifacts:
                 path: dist
